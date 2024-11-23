@@ -28,7 +28,9 @@ class QuestionController extends Controller
         $questions = [];
 
         // Get available quizzes
-        $quizzes = QuizDtl::all();
+        $quizzes = QuizDtl::whereNotIn('id', function ($query) {
+            $query->select('quiz_id')->from('questions');
+        })->get();
 
         return view('admin.questions.create', compact('questions', 'quizzes'));
     }

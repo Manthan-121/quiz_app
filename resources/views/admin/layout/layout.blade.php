@@ -68,7 +68,7 @@
                                     <a href="{{ route('admin.questions.create') }}">Add</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="#">Show</a>
+                                    <a href="{{ route('admin.questions.index') }}"">Show</a>
                                 </li>
                             </ul>
                         </li>

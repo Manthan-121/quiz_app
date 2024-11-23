@@ -1,10 +1,10 @@
 @extends('admin.layout.layout')
 
 @section('pgname')
-    Quizzes and Questions
+    Show Questions
 @endsection
 
-@section('content')
+@section('containt')
     <div id="main">
         <header class="mb-3">
             <a href="#" class="burger-btn d-block d-xl-none">
@@ -16,47 +16,88 @@
             <div class="page-title">
                 <div class="row">
                     <div class="col-12 col-md-6 order-md-1 order-last">
-                        <h3>Quizzes and Questions</h3>
+                        <h3>Show Quiz</h3>
                     </div>
                     <div class="col-12 col-md-6 order-md-2 order-first">
                         <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                             <ol class="breadcrumb">
+
                             </ol>
                         </nav>
                     </div>
                 </div>
             </div>
-        </div>
+            <section class="section">
+                <div class="card">
 
-        <!-- Table for Quiz List -->
-        <section class="section">
-            <div class="card">
-                <div class="card-body">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Quiz Title</th>
-                                <th>Total Questions</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($quizzes as $quiz)
+                    {{-- alert start-------------------- --}}
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @elseif (session('del-success'))
+                        <div class="alert alert-danger alert-dismissible" role="alert">
+                            {{ session('del-success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @elseif (session('edt-success'))
+                        <div class="alert alert-info alert-dismissible" role="alert">
+                            {{ session('edt-success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+                    {{-- alert end--------------------- --}}
+
+                    <div class="card-body">
+                        <table class="table table-striped" id="table1">
+                            <thead>
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $quiz->title }}</td>
-                                    <td>{{ $quiz->questions_count }}</td>
-                                    <td>
-                                        <a href="{{ route('admin.questions.show', $quiz->id) }}" class="btn btn-info">View Questions</a>
-                                        <!-- You can add other actions like Edit/Delete here -->
-                                    </td>
+                                    <th>#</th>
+                                    <th>Title</th>
+                                    <th>Total Questions</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $sqn = 1;
+                                @endphp
+                                @foreach ($quizzes as $quizze)
+                                    <tr>
+                                        <td>{{ $sqn }}</td>
+                                        <td>{{ $quizze->title }}</td>
+                                        <td>{{ $quizze->time }}</td>
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="statusCheckbox"
+                                                    {{ $quizze->active == 'enable' ? 'checked' : '' }}
+                                                    data-id="{{ $quizze->id }}">
+                                                <label class="form-check-label" for="statusCheckbox">
+                                                    {{ $quizze->active == 'enable' ? 'enable' : 'disable' }}
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-primary"><span
+                                                    class="fa-fw select-all fas"></span></button>
+                                            <a href="#" class="btn btn-success"><span
+                                                    class="fa-fw select-all fas"></span></a>
+                                            <button class="btn btn-light"><span
+                                                    class="fa-fw select-all fas"></span></button>
+                                        </td>
+                                    </tr>
+                                    @php
+                                        $sqn++;
+                                    @endphp
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-        </section>
+
+            </section>
+        </div>
     </div>
 @endsection
